@@ -1,7 +1,7 @@
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+@model Laboratorium1.Models.Calculator
 @{
 }
 
-<H3>@ViewBag.Result</H3>
+<p>@Model.X @Model.Op @Model.Y =</p>
+
+<h3 class="text-danger">@Model.Calculate()</h3>
