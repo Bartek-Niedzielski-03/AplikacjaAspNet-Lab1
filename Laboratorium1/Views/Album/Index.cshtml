@@ -1,0 +1,26 @@
+@model Dictionary<int, Laboratorium1.Models.Album>
+
+<h2>Lista albumów</h2>
+
+<a class="btn btn-success mb-3" asp-action="Create">Dodaj nowy album</a>
+
+<table class="table">
+    <tr>
+        <th>Tytuł</th>
+        <th>Wykonawca</th>
+        <th>Akcje</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Value.Title</td>
+            <td>@item.Value.Artist</td>
+            <td>
+                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Value.Id">Edytuj</a>
+                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Value.Id">Szczegóły</a>
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Value.Id">Usuń</a>
+            </td>
+        </tr>
+    }
+</table>

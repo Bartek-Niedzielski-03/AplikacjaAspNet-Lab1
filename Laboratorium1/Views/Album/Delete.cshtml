@@ -1,0 +1,12 @@
+@model Laboratorium1.Models.Album
+
+<h2>Czy na pewno usunąć ten album?</h2>
+
+<p><strong>@Model.Title</strong> – @Model.Artist</p>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <button type="submit" class="btn btn-danger">Usuń</button>
+    <a class="btn btn-secondary" asp-action="Index">Anuluj</a>
+</form>
