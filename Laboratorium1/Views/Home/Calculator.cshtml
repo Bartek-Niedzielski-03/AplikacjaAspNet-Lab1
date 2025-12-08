@@ -4,4 +4,14 @@
 @{
 }
 
-<p>Wynik działania dla @ViewBag.Op</p>
+<p>
+    Wynik działania dla @ViewBag.A @ViewBag.Op @ViewBag.B =
+    @if (ViewBag.Error != null)
+    {
+        @ViewBag.Error
+    }
+    else
+    {
+        @ViewBag.Result
+    }
+</p>
