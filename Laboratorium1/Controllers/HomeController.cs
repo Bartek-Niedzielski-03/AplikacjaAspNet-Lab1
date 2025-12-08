@@ -27,12 +27,12 @@ public class HomeController : Controller
     {
         return View();
     }
-    public IActionResult Calc(int a, int b)
+    public IActionResult Calculator(string op)
     {
-        int wynik = a + b;
-        ViewBag.Result = wynik;
+        ViewBag.Op = op;
         return View();
     }
+
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
