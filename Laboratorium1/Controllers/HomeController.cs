@@ -27,6 +27,12 @@ public class HomeController : Controller
     {
         return View();
     }
+    public IActionResult Calc(int a, int b)
+    {
+        int wynik = a + b;
+        ViewBag.Result = wynik;
+        return View();
+    }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
