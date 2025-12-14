@@ -5,11 +5,13 @@ namespace Laboratorium1.Models
 {
     public class MemoryAlbumService : IAlbumService
     {
+        private readonly IDateTimeProvider _timeProvider;
         private readonly Dictionary<int, Album> _items = new Dictionary<int, Album>();
         private int _id = 0;
 
         public void AddAlbum(Album album)
         {
+            album.Created = _timeProvider.Now();
             album.Id = ++_id;
             _items.Add(album.Id, album);
         }
@@ -35,5 +37,11 @@ namespace Laboratorium1.Models
             _items[album.Id] = album;
             return true;
         }
+        
+        public MemoryAlbumService(IDateTimeProvider timeProvider)
+        {
+            _timeProvider = timeProvider;
+        }
+
     }
 }
