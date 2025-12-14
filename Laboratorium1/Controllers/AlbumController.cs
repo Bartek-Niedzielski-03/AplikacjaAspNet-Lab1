@@ -5,11 +5,16 @@ namespace Laboratorium1.Controllers;
 
 public class AlbumController : Controller
 {
-    static Dictionary<int, Album> _albums = new Dictionary<int, Album>();
-    
+    private readonly IAlbumService _albumService;
+
+    public AlbumController(IAlbumService albumService)
+    {
+        _albumService = albumService;
+    }
+
     public IActionResult Index()
     {
-        return View(_albums);
+        return View(_albumService.GetAlbums());
     }
 
     [HttpGet]
@@ -17,71 +22,60 @@ public class AlbumController : Controller
     {
         return View();
     }
-    
-    [HttpGet]
-    public IActionResult Details(int id)
-    {
-        if (_albums.ContainsKey(id))
-        {
-            return View(_albums[id]);
-        }
-        return NotFound();
-    }
-    
-    [HttpGet]
-    public IActionResult Edit(int id)
-    {
-        if (_albums.ContainsKey(id))
-        {
-            return View(_albums[id]);
-        }
-        return NotFound();
-    }
-    
-    [HttpGet]
-    public IActionResult Delete(int id)
-    {
-        if (_albums.ContainsKey(id))
-        {
-            return View(_albums[id]);
-        }
-        return NotFound();
-    }
 
     [HttpPost]
     public IActionResult Create(Album album)
     {
         if (ModelState.IsValid)
         {
-            int id = _albums.Keys.Count != 0 ? _albums.Keys.Max() : 0;
-            album.Id = id + 1;
-
-            _albums.Add(album.Id, album);
-
-            return RedirectToAction("Index");
-        }
-        else
-        {
-            return View(album);
-        }
-    }
-    
-    [HttpPost]
-    public IActionResult Edit(Album album)
-    {
-        if (ModelState.IsValid)
-        {
-            _albums[album.Id] = album;
+            _albumService.AddAlbum(album);
             return RedirectToAction("Index");
         }
 
         return View(album);
     }
-    
+
+    [HttpGet]
+    public IActionResult Details(int id)
+    {
+        var album = _albumService.GetAlbumById(id);
+        if (album == null) return NotFound();
+        return View(album);
+    }
+
+    [HttpGet]
+    public IActionResult Edit(int id)
+    {
+        var album = _albumService.GetAlbumById(id);
+        if (album == null) return NotFound();
+        return View(album);
+    }
+
+    [HttpPost]
+    public IActionResult Edit(Album album)
+    {
+        if (!ModelState.IsValid) return View(album);
+
+        if (_albumService.UpdateAlbum(album))
+            return RedirectToAction("Index");
+
+        return NotFound();
+    }
+
+    [HttpGet]
+    public IActionResult Delete(int id)
+    {
+        var album = _albumService.GetAlbumById(id);
+        if (album == null) return NotFound();
+        return View(album);
+    }
+
     [HttpPost]
     public IActionResult DeleteConfirmed(int id)
     {
-        _albums.Remove(id);
-        return RedirectToAction("Index");
+        if (_albumService.DeleteAlbumById(id))
+            return RedirectToAction("Index");
+
+        return NotFound();
     }
 }

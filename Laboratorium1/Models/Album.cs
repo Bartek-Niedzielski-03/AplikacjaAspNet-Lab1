@@ -30,4 +30,6 @@ public class Album
     [Range(1, 1000)]
     public int Duration { get; set; }
 
+    [Display(Name = "Music Type")] 
+    public MusicType MusicType { get; set; }
 }

@@ -44,6 +44,15 @@
         <input asp-for="Duration" class="form-control" />
         <span asp-validation-for="Duration" class="text-danger"></span>
     </div>
+    
+    <div class="mb-3">
+        <label asp-for="MusicType" class="form-label"></label>
+        <span asp-validation-for="MusicType" class="text-danger"></span>
+        <select class="form-control"
+                asp-for="MusicType"
+                asp-items="@Html.GetEnumSelectList<MusicType>()">
+        </select>
+    </div>
 
     <button class="btn btn-primary" type="submit">Zapisz</button>
     <a class="btn btn-secondary" asp-action="Index">Powrót</a>
