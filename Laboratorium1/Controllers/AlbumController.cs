@@ -1,5 +1,7 @@
 using Laboratorium1.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq;
 
 namespace Laboratorium1.Controllers;
 
@@ -20,7 +22,9 @@ public class AlbumController : Controller
     [HttpGet]
     public IActionResult Create()
     {
-        return View();
+        var model = new Album();
+        FillLabels(model);
+        return View(model);
     }
 
     [HttpPost]
@@ -32,6 +36,7 @@ public class AlbumController : Controller
             return RedirectToAction("Index");
         }
 
+        FillLabels(album);
         return View(album);
     }
 
@@ -48,13 +53,19 @@ public class AlbumController : Controller
     {
         var album = _albumService.GetAlbumById(id);
         if (album == null) return NotFound();
+
+        FillLabels(album);
         return View(album);
     }
 
     [HttpPost]
     public IActionResult Edit(Album album)
     {
-        if (!ModelState.IsValid) return View(album);
+        if (!ModelState.IsValid)
+        {
+            FillLabels(album);
+            return View(album);
+        }
 
         if (_albumService.UpdateAlbum(album))
             return RedirectToAction("Index");
@@ -77,5 +88,17 @@ public class AlbumController : Controller
             return RedirectToAction("Index");
 
         return NotFound();
+    }
+
+    private void FillLabels(Album model)
+    {
+        model.Labels = _albumService
+            .FindAllLabels()
+            .Select(l => new SelectListItem
+            {
+                Value = l.Id.ToString(),
+                Text = l.Title
+            })
+            .ToList();
     }
 }

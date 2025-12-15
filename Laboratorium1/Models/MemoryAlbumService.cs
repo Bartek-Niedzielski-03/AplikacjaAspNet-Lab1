@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Data.Entities;
 
 namespace Laboratorium1.Models
 {
@@ -42,6 +43,14 @@ namespace Laboratorium1.Models
         {
             _timeProvider = timeProvider;
         }
-
+        
+        public List<LabelEntity> FindAllLabels()
+        {
+            return new List<LabelEntity>
+            {
+                new LabelEntity { Id = 101, Title = "Universal Music", Nip = "1111111111", Regon = "2222222222" },
+                new LabelEntity { Id = 102, Title = "Sony Music", Nip = "3333333333", Regon = "4444444444" }
+            };
+        }
     }
 }

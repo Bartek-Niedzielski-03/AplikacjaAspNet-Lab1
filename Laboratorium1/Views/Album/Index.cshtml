@@ -11,6 +11,7 @@
             <th>@Html.DisplayNameFor(m => m[0].Title)</th>
             <th>@Html.DisplayNameFor(m => m[0].Artist)</th>
             <th>@Html.DisplayNameFor(m => m[0].MusicType)</th>
+            <th>Label</th>
             <th>Akcje</th>
         </tr>
 
@@ -20,6 +21,7 @@
                 <td>@item.Title</td>
                 <td>@item.Artist</td>
                 <td>@item.MusicType.GetDisplayName()</td>
+                <td>@item.LabelTitle</td>
                 <td>
                     <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edytuj</a>
                     <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Szczegóły</a>

@@ -17,7 +17,9 @@ public static class AlbumMapper
             ReleaseDate = e.ReleaseDate,
             Duration = e.Duration,
             MusicType = (MusicType)e.MusicType,
-            Created = e.Created
+            Created = e.Created,
+            LabelId = e.LabelId,
+            LabelTitle = e.Label != null ? e.Label.Title : null
         };
     }
 
@@ -33,7 +35,8 @@ public static class AlbumMapper
             ReleaseDate = m.ReleaseDate,
             Duration = m.Duration,
             MusicType = (int)m.MusicType,
-            Created = m.Created
+            Created = m.Created,
+            LabelId = m.LabelId
         };
     }
 }

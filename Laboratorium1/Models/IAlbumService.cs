@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Data.Entities;
 
 namespace Laboratorium1.Models
 {
@@ -9,5 +10,6 @@ namespace Laboratorium1.Models
         bool UpdateAlbum(Album album);
         List<Album> GetAlbums();
         Album? GetAlbumById(int id);
+        List<LabelEntity> FindAllLabels();
     }
 }

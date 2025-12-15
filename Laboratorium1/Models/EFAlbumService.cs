@@ -1,4 +1,5 @@
 using Data;
+using Data.Entities;
 using Laboratorium1.Mappers;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,13 +34,18 @@ public class EFAlbumService : IAlbumService
     {
         return _context.Albums
             .AsNoTracking()
+            .Include(a => a.Label)
             .Select(e => AlbumMapper.FromEntity(e))
             .ToList();
     }
 
     public Album? GetAlbumById(int id)
     {
-        var entity = _context.Albums.AsNoTracking().FirstOrDefault(x => x.Id == id);
+        var entity = _context.Albums
+            .AsNoTracking()
+            .Include(a => a.Label)
+            .FirstOrDefault(a => a.Id == id);
+
         return entity == null ? null : AlbumMapper.FromEntity(entity);
     }
 
@@ -50,5 +56,9 @@ public class EFAlbumService : IAlbumService
         _context.Albums.Update(AlbumMapper.ToEntity(album));
         _context.SaveChanges();
         return true;
+    }
+    public List<LabelEntity> FindAllLabels()
+    {
+        return _context.Labels.ToList();
     }
 }
