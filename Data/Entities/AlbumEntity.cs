@@ -33,4 +33,6 @@ public class AlbumEntity
 
     [Column("created")]
     public DateTime Created { get; set; }
+    public int LabelId { get; set; }
+    public LabelEntity? Label { get; set; }
 }
