@@ -4,7 +4,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton<IAlbumService, MemoryAlbumService>();
+
+builder.Services.AddDbContext<Data.AppDbContext>();
+builder.Services.AddTransient<IAlbumService, EFAlbumService>();
+
 builder.Services.AddSingleton<IDateTimeProvider, CurrentDateTimeProvider>();
 
 var app = builder.Build();
