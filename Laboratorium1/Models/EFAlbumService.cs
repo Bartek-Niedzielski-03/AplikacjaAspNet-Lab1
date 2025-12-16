@@ -8,17 +8,25 @@ namespace Laboratorium1.Models;
 public class EFAlbumService : IAlbumService
 {
     private readonly AppDbContext _context;
+    private readonly IDateTimeProvider _timeProvider;
 
-    public EFAlbumService(AppDbContext context)
+    public EFAlbumService(AppDbContext context, IDateTimeProvider timeProvider)
     {
         _context = context;
+        _timeProvider = timeProvider;
     }
 
     public void AddAlbum(Album album)
     {
+        if (album.Created == default)
+        {
+            album.Created = _timeProvider.Now();
+        }
+
         _context.Albums.Add(AlbumMapper.ToEntity(album));
         _context.SaveChanges();
     }
+
 
     public bool DeleteAlbumById(int id)
     {

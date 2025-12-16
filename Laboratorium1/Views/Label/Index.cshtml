@@ -1,0 +1,31 @@
+@model List<Data.Entities.LabelEntity>
+
+<h2>Lista Labeli</h2>
+
+<a class="btn btn-primary mb-3" asp-action="Create">Dodaj label</a>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Nazwa</th>
+        <th>NIP</th>
+        <th>REGON</th>
+        <th>Akcje</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Title</td>
+            <td>@item.Nip</td>
+            <td>@item.Regon</td>
+            <td>
+                <a class="btn btn-sm btn-warning"
+                   asp-action="Edit"
+                   asp-route-id="@item.Id">Edytuj</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

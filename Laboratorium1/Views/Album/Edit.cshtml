@@ -53,6 +53,15 @@
                 asp-items="@Html.GetEnumSelectList<MusicType>()">
         </select>
     </div>
+    
+    <div class="mb-3">
+        <label asp-for="LabelId" class="form-label"></label>
+        <span asp-validation-for="LabelId" class="text-danger"></span>
+        <select class="form-control"
+                asp-for="LabelId"
+                asp-items="@Model.Labels">
+        </select>
+    </div>
 
     <button class="btn btn-primary" type="submit">Zapisz</button>
     <a class="btn btn-secondary" asp-action="Index">Powrót</a>

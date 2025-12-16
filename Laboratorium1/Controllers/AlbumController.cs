@@ -2,6 +2,7 @@ using Laboratorium1.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
+using System;
 
 namespace Laboratorium1.Controllers;
 
@@ -14,15 +15,34 @@ public class AlbumController : Controller
         _albumService = albumService;
     }
 
-    public IActionResult Index()
+    public IActionResult Index(int page = 1, int pageSize = 10)
     {
-        return View(_albumService.GetAlbums());
+        var all = _albumService.GetAlbums();
+
+        int totalItems = all.Count;
+        int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+        
+        if (totalPages < 1) totalPages = 1;
+        page = Math.Max(1, Math.Min(page, totalPages));
+
+        var items = all
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        ViewBag.Page = page;
+        ViewBag.PageSize = pageSize;
+        ViewBag.TotalPages = totalPages;
+
+        return View(items);
     }
+
 
     [HttpGet]
     public IActionResult Create()
     {
         var model = new Album();
+        model.ReleaseDate = DateTime.Today;
         FillLabels(model);
         return View(model);
     }
@@ -54,23 +74,36 @@ public class AlbumController : Controller
         var album = _albumService.GetAlbumById(id);
         if (album == null) return NotFound();
 
-        FillLabels(album);
+        album.Labels = _albumService
+            .FindAllLabels()
+            .Select(l => new SelectListItem
+            {
+                Value = l.Id.ToString(),
+                Text = l.Title
+            })
+            .ToList();
+
         return View(album);
     }
-
     [HttpPost]
     public IActionResult Edit(Album album)
     {
         if (!ModelState.IsValid)
         {
-            FillLabels(album);
+            album.Labels = _albumService
+                .FindAllLabels()
+                .Select(l => new SelectListItem
+                {
+                    Value = l.Id.ToString(),
+                    Text = l.Title
+                })
+                .ToList();
+
             return View(album);
         }
 
-        if (_albumService.UpdateAlbum(album))
-            return RedirectToAction("Index");
-
-        return NotFound();
+        _albumService.UpdateAlbum(album);
+        return RedirectToAction("Index");
     }
 
     [HttpGet]

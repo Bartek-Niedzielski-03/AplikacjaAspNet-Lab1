@@ -30,6 +30,43 @@
             </tr>
         }
     </table>
+    @if ((int)ViewBag.TotalPages > 1)
+    {
+        <nav>
+            <ul class="pagination">
+                @{
+                    int page = (int)ViewBag.Page;
+                    int totalPages = (int)ViewBag.TotalPages;
+                    int pageSize = (int)ViewBag.PageSize;
+                }
+
+                <li class="page-item @(page == 1 ? "disabled" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-page="@(page - 1)"
+                       asp-route-pageSize="@pageSize">«</a>
+                </li>
+
+                @for (int p = 1; p <= totalPages; p++)
+                {
+                    <li class="page-item @(p == page ? "active" : "")">
+                        <a class="page-link"
+                           asp-action="Index"
+                           asp-route-page="@p"
+                           asp-route-pageSize="@pageSize">@p</a>
+                    </li>
+                }
+
+                <li class="page-item @(page == totalPages ? "disabled" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-page="@(page + 1)"
+                       asp-route-pageSize="@pageSize">»</a>
+                </li>
+            </ul>
+        </nav>
+    }
+
 }
 else
 {
